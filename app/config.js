@@ -9,6 +9,7 @@ var knex = require('knex')({
 var db = require('bookshelf')(knex);
 var mongoose = require('mongoose');
 
+/*
 db.knex.schema.hasTable('urls').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('urls', function (link) {
@@ -37,5 +38,6 @@ db.knex.schema.hasTable('users').then(function(exists) {
     });
   }
 });
+*/
 
 module.exports = db;

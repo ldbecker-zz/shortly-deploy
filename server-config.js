@@ -35,6 +35,10 @@ app.get('/logout', handler.logoutUser);
 app.get('/signup', handler.signupUserForm);
 app.post('/signup', handler.signupUser);
 
+app.get('/favicon.ico', function(req, res) {
+  res.sendStatus(200);
+});
+
 app.get('/*', handler.navToLink);
 
 module.exports = app;
