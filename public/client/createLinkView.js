@@ -13,14 +13,28 @@ Shortly.createLinkView = Backbone.View.extend({
   },
 
   shortenUrl: function(e) {
-    console.log('event', e);
+    var rValidUrl = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i;
+
+    var isValidUrl = function(url) {
+      return url.match(rValidUrl);
+    };
+
     e.preventDefault();
+    console.log(e);
     var $form = this.$el.find('form .text');
     var link = new Shortly.Link({ url: $form.val() });
-    link.on('request', this.startSpinner, this);
-    link.on('sync', this.success, this);
-    link.on('error', this.failure, this);
-    link.save({});
+    console.log(link);
+
+    if (isValidUrl($form.val())) {
+      this.success.call(this, $form.val());
+    } else {
+      this.failure.call(this, {}, $form.val());
+    }
+
+    // link.on('request', this.startSpinner, this);
+    // link.on('sync', this.success, this);
+    // link.on('error', this.failure, this);
+    //link.save({});
     $form.val('');
   },
 
@@ -35,7 +49,7 @@ Shortly.createLinkView = Backbone.View.extend({
     console.log('FAILURE.');
     this.stopSpinner();
     this.$el.find('.message')
-      .html('Please enter a valid URL')
+      .html('Please URL')
       .addClass('error');
     return this;
   },
