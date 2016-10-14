@@ -22,20 +22,24 @@ Shortly.createLinkView = Backbone.View.extend({
     e.preventDefault();
     console.log(e);
     var $form = this.$el.find('form .text');
-    var link = new Shortly.Link({ url: $form.val() });
-    console.log(link);
+
+    var link = new Shortly.Link({ url: $form.val(), visits: 0 });
+    console.log('*************', link);
 
     if (isValidUrl($form.val())) {
-      this.success.call(this, $form.val());
+      this.success.call(this, link);
     } else {
-      this.failure.call(this, {}, $form.val());
+      this.failure.call(this, {}, link);
     }
 
     // link.on('request', this.startSpinner, this);
     // link.on('sync', this.success, this);
     // link.on('error', this.failure, this);
-    //link.save({});
+    link.save({});
     $form.val('');
+    
+
+    
   },
 
   success: function(link) {
